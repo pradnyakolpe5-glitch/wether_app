@@ -6,7 +6,7 @@ import 'package:weather_forecasting/screen/home.dart';
 import 'package:weather_forecasting/storage/local_storage.dart';
 
 import 'bloc/get_temp/get_temp_cubit.dart';
-
+// changes
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorageUtils.init().then(
