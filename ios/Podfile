@@ -1,0 +1,34 @@
+platform :ios, '11.0'
+
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+# Flutter integration
+flutter_root = File.expand_path('..', __FILE__) + '/..'
+load File.join(flutter_root, 'Flutter', 'flutter_export_environment.sh')
+
+# Pods for Runner
+use_frameworks!
+use_modular_headers!
+
+target 'Runner' do
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+end
+
+# Fix for Geolocator permissions
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name == "geolocator_apple"
+      target.build_configurations.each do |config|
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+          '$(inherited)', 'BYPASS_PERMISSION_LOCATION_ALWAYS=1'
+        ]
+      end
+    end
+  end
+end
